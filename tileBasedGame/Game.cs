@@ -26,12 +26,20 @@ namespace tileBasedGame
             newMaxMinPoints();
         }
 
+        /// <summary>
+        /// resize the screen size
+        /// </summary>
+        /// <param name="width">width of the new screen</param>
+        /// <param name="height">height of the new screen</param>
         public void ScreensizeChanced(int width, int height)
         {
             screensize = new Point(width, height);
             newMaxMinPoints();
         }
 
+        /// <summary>
+        /// calculate the new max and min points (for scrolling in the screen
+        /// </summary>
         private void newMaxMinPoints()
         {
             int minx = 0;
@@ -61,6 +69,11 @@ namespace tileBasedGame
             maxDrag = new Point(maxx, maxy);
         }
 
+        /// <summary>
+        /// the draw method
+        /// </summary>
+        /// <param name="g">the graphics object to draw on</param>
+        /// <param name="DrawPosition">the position you have moved your coördinates to</param>
         public void Draw(Graphics g, Point DrawPosition)
         {
             Font drawFont = new Font("Arial", 16);
@@ -81,6 +94,10 @@ namespace tileBasedGame
             }
         }
 
+        /// <summary>
+        /// generates an updated connectinglocations list 4 directions connected
+        /// </summary>
+        /// <param name="t"></param>
         public void checkIfConnectAnywhere(Tile t)
         {
             connectingLocation.Clear();
@@ -104,28 +121,27 @@ namespace tileBasedGame
                 }
                 if (direction > 0)
                 {
-                    Tile newtile = (Tile)t.Clone(); // new Tile(t.tileVals, t.extrapoints);
+                    Tile newtile = (Tile)t.Clone(); 
                     for (int i = 0; i < 4; i++)
                     {
                         uint shifted = (uint)1 << i;
                         if ((direction & shifted) != 0)
                         {
-                            // newtile.rotate90deg(true);
-
                             newtile.rotate90deg(i,false);
                             i = 5;
                         }
                         else
                         {
                         }
-
-
                     }
                     connectingLocation.Add(loc, newtile);
                 }
             }
         }
 
+        /// <summary>
+        /// generates the edge all tiles 4 way connected to exsisting tiles
+        /// </summary>
         private void newEdge()
         {
             FieldEdge = new List<Point>();
@@ -144,15 +160,22 @@ namespace tileBasedGame
             }
         }
 
+        /// <summary>
+        /// add a tile at defined location
+        /// </summary>
+        /// <param name="t">tile to add</param>
+        /// <param name="loc">location to add the tile</param>
         public void AddTile(Tile t,Point loc)
         {
             t.update();
-            //t.update(loc.X, loc.Y);
             _field.Add(loc, t);
             newEdge();
             checkIfConnectAnywhere(t);
         }
 
+        /// <summary>
+        /// add a random tile on a location defined by the number of existing tiles
+        /// </summary>
         public void AddTile()
         {
 
@@ -167,6 +190,10 @@ namespace tileBasedGame
             newMaxMinPoints();
         }
 
+        /// <summary>
+        /// rotate random tiles
+        /// </summary>
+        /// <param name="chance">chance for each tile to rotate</param>
         public void RotateRandom(int chance=5)
         {
             foreach (Point p in connectingLocation.Keys)
@@ -179,17 +206,28 @@ namespace tileBasedGame
             }
         }
 
+
+        /// <summary>
+        /// rotate tile 90 degrees at location
+        /// </summary>
+        /// <param name="location">location to rotate</param>
         public void RotateTile(Point location)
         {
             _field[location].rotate90deg();
             checkIfConnectAnywhere((Tile)_field[location].Clone());
         }
 
+        /// <summary>
+        /// rotate the latest added tile 90 degrees
+        /// </summary>
         public void RotateLast()
         {
             RotateTile(_field.Keys.Last());
         }
 
+        /// <summary>
+        /// preform a gametick
+        /// </summary>
         public void gametick()
         {
 
@@ -201,8 +239,6 @@ namespace tileBasedGame
                 {
                     t.select = false;
                 }
-                int id = Constants.rand.Next(_field.Count);
-                //_field[_field.Keys.ToArray()[id]].select = true;
             }
         }
     }

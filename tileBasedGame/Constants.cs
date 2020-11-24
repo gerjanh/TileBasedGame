@@ -110,7 +110,11 @@ namespace tileBasedGame
         }
 
 
-
+        /// <summary>
+        /// get the mouse point location
+        /// </summary>
+        /// <param name="lpPoint">give a refference to the point object u want the mouse position saved in</param>
+        /// <returns>if getting the mouse position was a succes or not</returns>
         public static bool CursorPos(ref Point lpPoint)
         {
             try
@@ -125,6 +129,10 @@ namespace tileBasedGame
             }
         }
 
+        /// <summary>
+        /// returns the mouse point location
+        /// </summary>
+        /// <returns>the mouse position</returns>
         public Point getPoint()
         {
             CursorPos(ref _p);
